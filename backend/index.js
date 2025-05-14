@@ -13,6 +13,18 @@ app.post('/api/carrinho', (req, res) => {
   const { email, timestamp, cart_items, site_url } = req.body;
   const dados = JSON.stringify(cart_items);
 
+  // ❌ Ignora e-mails inválidos ou genéricos
+  if (
+    !email ||
+    email === 'guest@seudominio.com' ||
+    email.includes('guest') ||
+    !email.includes('@') ||
+    email.length < 5
+  ) {
+    console.log('Carrinho descartado: e-mail inválido ou genérico:', email);
+    return res.send({ status: 'ignorado' });
+  }
+
   // 🛡️ Verifica se já existe carrinho recente (últimos 60s)
   db.get(
     'SELECT * FROM carrinhos WHERE email = ? AND timestamp >= ?',
@@ -43,7 +55,6 @@ app.post('/api/carrinho', (req, res) => {
     }
   );
 });
-
 
 // 📦 Rota para consultar carrinhos
 app.get('/api/carrinhos', (req, res) => {
