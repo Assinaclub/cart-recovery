@@ -30,18 +30,47 @@ function assina_capture_cart() {
         ];
     }
 
+    $email = 'guest@site.com';
+
+    if (is_user_logged_in()) {
+        $email = wp_get_current_user()->user_email;
+    } elseif (!empty($_COOKIE['assina_checkout_email']) && is_email($_COOKIE['assina_checkout_email'])) {
+        $email = sanitize_email($_COOKIE['assina_checkout_email']);
+    }
+
     $data = [
-        'email' => is_user_logged_in() ? wp_get_current_user()->user_email : 'guest@site.com',
+        'email' => $email,
         'timestamp' => time(),
         'cart_items' => $items,
+        'site_url' => get_site_url(),
     ];
 
     // Envia os dados para sua API
-    $endpoint = 'https://carrinho-api.onrender.com/api/carrinho'; // <-- Atualize aqui depois
+    $endpoint = 'https://carrinho-api.onrender.com/api/carrinho';
     wp_remote_post($endpoint, [
         'method' => 'POST',
         'headers' => ['Content-Type' => 'application/json'],
         'body' => json_encode($data),
         'timeout' => 10
     ]);
+}
+
+// Injetar script no checkout para capturar e-mail de visitantes
+add_action('wp_footer', 'assina_injetar_script_checkout');
+function assina_injetar_script_checkout() {
+    if (!is_checkout()) return;
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailInput = document.querySelector('#billing_email');
+        if (emailInput) {
+            emailInput.addEventListener('input', function () {
+                const email = emailInput.value.trim();
+                localStorage.setItem('assina_checkout_email', email);
+                document.cookie = "assina_checkout_email=" + encodeURIComponent(email) + "; path=/";
+            });
+        }
+    });
+    </script>
+    <?php
 }
