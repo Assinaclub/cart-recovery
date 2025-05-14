@@ -1,12 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f6f9;
+  color: #333; /* Cor legível */
 }
 
 .dashboard {
   display: flex;
   height: 100vh;
+  width: 100%;
 }
 
 .sidebar {
@@ -14,43 +20,52 @@ body {
   background-color: #222d32;
   color: white;
   padding: 1rem;
+  flex-shrink: 0;
 }
 
 .sidebar h2 {
   margin: 0 0 1rem;
   font-size: 20px;
   text-align: center;
+  color: white;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
   padding: 10px;
   cursor: pointer;
+  color: #ccc;
 }
 
 .sidebar li:hover {
   background-color: #1a2226;
+  color: white;
 }
 
 .main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: calc(100% - 220px);
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
 .topbar {
   background-color: #3c8dbc;
   color: white;
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .content {
   padding: 2rem;
-  overflow-y: auto;
 }
 
 .card {
@@ -77,6 +92,7 @@ th, td {
   text-align: left;
   border-bottom: 1px solid #ddd;
   vertical-align: top;
+  color: #333;
 }
 
 th {
