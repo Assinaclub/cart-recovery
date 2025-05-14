@@ -37,7 +37,7 @@ function assina_capture_cart() {
     ];
 
     // Envia os dados para sua API
-    $endpoint = 'https://SEU_BACKEND/render/api/carrinho'; // <-- Atualize aqui depois
+    $endpoint = 'https://carrinho-api.onrender.com/api/carrinho'; // <-- Atualize aqui depois
     wp_remote_post($endpoint, [
         'method' => 'POST',
         'headers' => ['Content-Type' => 'application/json'],

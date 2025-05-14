@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './App.css';
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import './App.css'
 
 function App() {
-  const [carrinhos, setCarrinhos] = useState([]);
+  const [carrinhos, setCarrinhos] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/carrinhos')
+    axios.get('https://carrinho-api.onrender.com/api/carrinhos')
       .then(res => setCarrinhos(res.data))
-      .catch(err => console.error('Erro ao buscar carrinhos:', err));
-  }, []);
+      .catch(err => console.error('Erro ao buscar carrinhos:', err))
+  }, [])
 
   return (
     <div className="App">
@@ -41,7 +41,7 @@ function App() {
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
