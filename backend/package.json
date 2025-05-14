@@ -1,0 +1,17 @@
+{
+    "name": "carrinho-api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "sqlite3": "^5.1.6",
+      "nodemailer": "^6.9.8",
+      "dotenv": "^16.3.1",
+      "cors": "^2.8.5"
+    }
+  }
+  
