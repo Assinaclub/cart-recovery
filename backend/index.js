@@ -13,18 +13,37 @@ app.post('/api/carrinho', (req, res) => {
   const { email, timestamp, cart_items, site_url } = req.body;
   const dados = JSON.stringify(cart_items);
 
-  db.run(
-    `INSERT INTO carrinhos (email, timestamp, dados, site_url, enviado) VALUES (?, ?, ?, ?, 0)`,
-    [email, timestamp, dados, site_url || 'https://seudominio.com'],
-    function (err) {
+  // 🛡️ Verifica se já existe carrinho recente (últimos 60s)
+  db.get(
+    'SELECT * FROM carrinhos WHERE email = ? AND timestamp >= ?',
+    [email, timestamp - 60],
+    (err, existing) => {
       if (err) {
-        console.error(err);
+        console.error('Erro ao verificar duplicidade:', err);
         return res.sendStatus(500);
       }
-      res.send({ status: 'ok', id: this.lastID });
+
+      if (existing) {
+        console.log('Carrinho duplicado ignorado:', email);
+        return res.send({ status: 'duplicado' });
+      }
+
+      // ✅ Se não existir, insere normalmente
+      db.run(
+        'INSERT INTO carrinhos (email, timestamp, dados, site_url, enviado) VALUES (?, ?, ?, ?, 0)',
+        [email, timestamp, dados, site_url || 'https://seudominio.com'],
+        function (err) {
+          if (err) {
+            console.error(err);
+            return res.sendStatus(500);
+          }
+          res.send({ status: 'ok', id: this.lastID });
+        }
+      );
     }
   );
 });
+
 
 // 📦 Rota para consultar carrinhos
 app.get('/api/carrinhos', (req, res) => {
