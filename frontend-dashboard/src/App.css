@@ -1,0 +1,22 @@
+.App {
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+th {
+  background-color: #f7f7f7;
+}
