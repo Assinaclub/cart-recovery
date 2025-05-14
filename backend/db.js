@@ -8,6 +8,7 @@ db.serialize(() => {
       email TEXT,
       timestamp INTEGER,
       dados TEXT,
+      site_url TEXT DEFAULT '',
       enviado INTEGER DEFAULT 0
     )
   `);
